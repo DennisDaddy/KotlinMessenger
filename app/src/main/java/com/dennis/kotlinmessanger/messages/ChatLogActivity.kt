@@ -12,12 +12,14 @@ import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_chat_log.*
 import kotlinx.android.synthetic.main.chat_from_raw.view.*
 import kotlinx.android.synthetic.main.chat_to_raw.view.*
+import kotlinx.android.synthetic.main.user_row_new_message.view.*
 
 class ChatLogActivity : AppCompatActivity() {
 
@@ -58,7 +60,8 @@ class ChatLogActivity : AppCompatActivity() {
                     if (chatMessage.fromId == FirebaseAuth.getInstance().uid){
                         adapter.add(ChatFromItem(chatMessage.text))
                     } else{
-                        adapter.add(ChatToItem(chatMessage.text))
+                        val toUser = intent.getParcelableExtra<User>(NewMessageActivity.USER_KEY)
+                        adapter.add(ChatToItem(chatMessage.text, toUser))
                     }
                 }
 
@@ -105,22 +108,6 @@ class ChatLogActivity : AppCompatActivity() {
 
     }
 
-    private fun setupDummyData(){
-        val adapter = GroupAdapter<ViewHolder>()
-
-        adapter.add(ChatFromItem("FROM MESSSSSSAGE I OWN"))
-        adapter.add(ChatToItem("TO MESSAGE\nTOMESSAGE"))
-        adapter.add(ChatFromItem("FROM MESSSSSSAGE I OWN"))
-        adapter.add(ChatToItem("TO MESSAGE\nTOMESSAGE"))
-        adapter.add(ChatFromItem("FROM MESSSSSSAGE I OWN"))
-        adapter.add(ChatToItem("TO MESSAGE\nTOMESSAGE"))
-        adapter.add(ChatFromItem("FROM MESSSSSSAGE I OWN"))
-        adapter.add(ChatToItem("TO MESSAGE\nTOMESSAGE"))
-        adapter.add(ChatFromItem("FROM MESSSSSSAGE I OWN"))
-        adapter.add(ChatToItem("TO MESSAGE\nTOMESSAGE"))
-
-        recyclerview_chat_log.adapter = adapter
-    }
 }
 
 class ChatFromItem(val text: String): Item<ViewHolder>(){
@@ -133,9 +120,14 @@ class ChatFromItem(val text: String): Item<ViewHolder>(){
     }
 }
 
-class ChatToItem(val text: String): Item<ViewHolder>(){
+class ChatToItem(val text: String, val user: User): Item<ViewHolder>(){
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.textview_to_row.text = text
+
+        // load our user image into the star
+        val uri = user.profileImageUrl
+        val targetImageView = viewHolder.itemView.imageview_chat_to_row
+        Picasso.get().load(uri).into(targetImageView)
 
     }
 
