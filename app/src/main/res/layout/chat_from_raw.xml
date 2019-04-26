@@ -14,7 +14,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/rounded_edit_text_register_login"
-        android:padding="16dp"
+        android:padding="8dp"
+        android:paddingBottom="5dp"
         android:text="Hi! I'm Tania. I'm a full-stack software developer specializing in
          modern JavaScript."
         android:maxWidth="240dp"

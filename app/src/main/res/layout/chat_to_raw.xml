@@ -15,7 +15,7 @@
         android:layout_marginStart="24dp"
         android:background="@drawable/rounded_edit_text_register_login"
         android:maxWidth="240dp"
-        android:padding="16dp"
+        android:padding="8dp"
         android:text="Hi! I'm Tania. I'm a full-stack software developer specializing in
          modern JavaScript."
         app:layout_constraintEnd_toStartOf="@+id/imageView"
