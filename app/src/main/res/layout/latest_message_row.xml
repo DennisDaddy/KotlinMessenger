@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="120dp">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/image_view_latest_message"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="24dp"
+        app:civ_border_width="4dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,7 +19,7 @@
         app:srcCompat="@android:drawable/btn_star_big_on" />
 
     <TextView
-        android:id="@+id/user_textview_latest_message"
+        android:id="@+id/username_textview_latest_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -43,5 +44,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/image_view_latest_message"
-        app:layout_constraintTop_toBottomOf="@+id/user_textview_latest_message" />
+        app:layout_constraintTop_toBottomOf="@+id/username_textview_latest_message" />
 </android.support.constraint.ConstraintLayout>

@@ -9,6 +9,7 @@ import android.view.MenuItem
 import com.dennis.kotlinmessanger.model.ChatMessage
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
@@ -38,8 +39,32 @@ class LatestMessagesActivity : AppCompatActivity() {
     class LatestMessageRow(val chatMessage: ChatMessage): Item<ViewHolder>(){
         override fun bind(viewHolder: ViewHolder, position: Int) {
             viewHolder.itemView.message_textview_latest_message.text = chatMessage.text
-        }
 
+            val chatPartnerId: String
+            if (chatMessage.fromId == FirebaseAuth.getInstance().uid){
+                chatPartnerId = chatMessage.toId
+            }else{
+                chatPartnerId = chatMessage.fromId
+            }
+
+            val ref = FirebaseDatabase.getInstance().getReference("/users/$chatPartnerId")
+            ref.addListenerForSingleValueEvent(object: ValueEventListener{
+                override fun onDataChange(p0: DataSnapshot) {
+                    val user = p0.getValue(User::class.java)
+                    viewHolder.itemView.username_textview_latest_message.text = user?.username
+
+                    val targetImageView = viewHolder.itemView.image_view_latest_message
+                    Picasso.get().load(user?.profileImageUrl).into(targetImageView)
+
+                }
+
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+            })
+
+
+        }
 
         override fun getLayout(): Int {
             return R.layout.latest_message_row
