@@ -7,6 +7,7 @@ import android.support.v7.widget.DividerItemDecoration
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import com.dennis.kotlinmessanger.messages.ChatLogActivity
 import com.dennis.kotlinmessanger.model.ChatMessage
 import com.dennis.kotlinmessanger.views.LatestMessageRow
 import com.google.firebase.auth.FirebaseAuth
@@ -22,6 +23,7 @@ class LatestMessagesActivity : AppCompatActivity() {
 
     companion object {
         var currentUser: User? = null
+        val TAG = "LatestMessages"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +34,18 @@ class LatestMessagesActivity : AppCompatActivity() {
         recyclerview_latest_messages.addItemDecoration(DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL))
 
-//        setupDummyRows()
+        // set item click listener on adapter on your adapter
+        adapter.setOnItemClickListener { item, view ->
+            Log.d(TAG,"123")
+            val intent = Intent(this, ChatLogActivity::class.java)
+            // we are missing the partner user
+
+            val row = item as LatestMessageRow
+            intent.putExtra(NewMessageActivity.USER_KEY, row.chatPartnerUser)
+            startActivity(intent)
+        }
+
+//      setupDummyRows()
         listenForLatestMessages()
 
         fetchCurrentUser()

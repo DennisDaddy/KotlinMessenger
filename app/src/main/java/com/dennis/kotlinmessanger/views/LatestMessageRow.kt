@@ -14,6 +14,8 @@ import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.latest_message_row.view.*
 
 class LatestMessageRow(val chatMessage: ChatMessage): Item<ViewHolder>(){
+    var chatPartnerUser: User? = null
+
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.message_textview_latest_message.text = chatMessage.text
 
@@ -27,11 +29,11 @@ class LatestMessageRow(val chatMessage: ChatMessage): Item<ViewHolder>(){
         val ref = FirebaseDatabase.getInstance().getReference("/users/$chatPartnerId")
         ref.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
-                val user = p0.getValue(User::class.java)
-                viewHolder.itemView.username_textview_latest_message.text = user?.username
+                chatPartnerUser = p0.getValue(User::class.java)
+                viewHolder.itemView.username_textview_latest_message.text = chatPartnerUser?.username
 
                 val targetImageView = viewHolder.itemView.image_view_latest_message
-                Picasso.get().load(user?.profileImageUrl).into(targetImageView)
+                Picasso.get().load(chatPartnerUser?.profileImageUrl).into(targetImageView)
 
             }
 
